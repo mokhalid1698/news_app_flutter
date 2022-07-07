@@ -18,7 +18,7 @@ void main() {
   }, blocObserver: MyBlocObserver());
   // BlocObserver = MyBlocObserver();
 }
-
+//test mohamed khalid git
 class MyApp2 extends StatelessWidget {
   const MyApp2({Key? key}) : super(key: key);
 
