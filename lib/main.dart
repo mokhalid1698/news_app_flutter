@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/Cubit/cubit.dart';
-import 'package:news_app/Cubit/state.dart';
-import 'package:news_app/NetWork/dio_helpper.dart';
-import 'package:news_app/Screens/Home_News.dart';
-import 'Cubit/bloc_observer.dart';
+
+
+import 'bloc_observer.dart';
+
+import 'NetWork/dio_helpper.dart';
+
+import 'layout/NewsApp/Cubit/cubit.dart';
+import 'layout/NewsApp/Cubit/state.dart';
+import 'layout/NewsApp/Home_News.dart';
+
 
 void main() {
   BlocOverrides.runZoned(() {

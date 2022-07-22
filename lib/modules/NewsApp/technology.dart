@@ -2,9 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
+import 'package:modules.news_app/layout/NewsApp/Cubit/cubit.dart';
+import 'package:modules.news_app/layout/NewsApp/Cubit/state.dart';
 
-import '../Cubit/cubit.dart';
-import '../Cubit/state.dart';
+
 import 'Business.dart';
 
 class TechnologyScreen extends StatelessWidget {
