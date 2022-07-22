@@ -2,10 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
-import 'package:news_app/Screens/Business.dart';
 
-import '../Cubit/cubit.dart';
-import '../Cubit/state.dart';
+
+import '../../layout/NewsApp/Cubit/cubit.dart';
+import '../../layout/NewsApp/Cubit/state.dart';
+import 'Business.dart';
 
 class SportsScreen extends StatelessWidget {
   @override

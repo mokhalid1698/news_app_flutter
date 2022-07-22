@@ -1,13 +1,18 @@
+
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/Cubit/state.dart';
-import 'package:news_app/Screens/Business.dart';
-import 'package:news_app/Screens/sportsScreen.dart';
-import 'package:news_app/Screens/technology.dart';
+import 'package:modules.news_app/layout/NewsApp/Cubit/state.dart';
+
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../NetWork/dio_helpper.dart';
+
+import '../../../NetWork/dio_helpper.dart';
+import '../../../modules/NewsApp/Business.dart';
+import '../../../modules/NewsApp/sportsScreen.dart';
+import '../../../modules/NewsApp/technology.dart';
 
 class NewsCubit extends Cubit<NewsStates> {
   NewsCubit() : super(InitialState());
