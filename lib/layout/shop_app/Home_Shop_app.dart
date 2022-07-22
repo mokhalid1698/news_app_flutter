@@ -45,11 +45,7 @@ class HomeShopApp extends StatelessWidget {
           currentIndex: get.currentIndex,
 
         ),
-        body: const Center(
-            child: Text(
-              "Salla",
-              style: TextStyle(fontSize: 40),
-            )),
+        body: get.screensList[get.currentIndex],
       );
     }, listener: (context, state) {
 
