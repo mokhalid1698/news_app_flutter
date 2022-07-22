@@ -77,5 +77,10 @@ ThemeData lightTheme = ThemeData(
         fontSize: 14,
         overflow: TextOverflow.ellipsis,
         fontWeight: FontWeight.bold,
-      )),
+      )
+  ,headline4: TextStyle(
+    fontSize: 60
+  )
+
+  ),
 );

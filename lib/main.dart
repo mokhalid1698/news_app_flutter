@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modules.news_app/layout/shop_app/Cubit/ShopCubit.dart';
 import 'package:modules.news_app/layout/shop_app/Home_Shop_app.dart';
+import 'package:modules.news_app/modules/shop_app/loginScreen/loginScreen.dart';
 import 'package:modules.news_app/shared/styles/themes.dart';
 
 import 'bloc_observer.dart';
@@ -40,7 +41,7 @@ class MyApp2 extends StatelessWidget {
             themeMode: get.mode ? ThemeMode.dark : ThemeMode.light,
             theme: lightTheme,
             darkTheme: darkTheme,
-            home: const HomeShopApp(),
+            home:  LoginScreen(),
             // home: const Directionality(textDirection: TextDirection.rtl, child: HomeNews()),
           );
         },
