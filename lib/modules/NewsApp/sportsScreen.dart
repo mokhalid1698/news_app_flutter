@@ -14,7 +14,7 @@ class SportsScreen extends StatelessWidget {
       return BlocConsumer<NewsCubit, NewsStates>(
           builder: (context, state) {
             if (kDebugMode) {
-              print(NewsCubit().sports);
+
             }
             var get = NewsCubit.get(context).sports;
             return Conditional.single(
