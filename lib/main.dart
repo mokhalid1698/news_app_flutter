@@ -17,7 +17,6 @@ void main() {
     runApp(MultiBlocProvider(providers: [
       BlocProvider(
           create: (context) => NewsCubit()
-            ..getDataBusiness()
             ..getModeOfSharedPreferences(),
           child: const MyApp2()),
       BlocProvider(create: (context) => ShopCubit(), child: const MyApp2())
