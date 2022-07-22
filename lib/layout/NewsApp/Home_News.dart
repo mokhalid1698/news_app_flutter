@@ -1,8 +1,3 @@
-
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modules.news_app/layout/NewsApp/Cubit/cubit.dart';
@@ -46,7 +41,7 @@ class HomeNews extends StatelessWidget {
                 ),
               ],
 
-              title: Text(get.mode ? "App News" : "App News Dark",
+              title: Text(!get.mode ? "App News" : "App News Dark",
                   style: Theme.of(context).textTheme.bodyText1),
               // centerTitle: true,
             ),

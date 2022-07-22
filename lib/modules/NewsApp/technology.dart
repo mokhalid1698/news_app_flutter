@@ -16,7 +16,7 @@ class TechnologyScreen extends StatelessWidget {
     return BlocConsumer<NewsCubit, NewsStates>(
         builder: (context, state) {
           if (kDebugMode) {
-            print(NewsCubit().technology);
+
           }
           var get = NewsCubit.get(context).technology;
           return Conditional.single(
