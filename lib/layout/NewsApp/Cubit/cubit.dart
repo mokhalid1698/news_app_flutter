@@ -1,13 +1,9 @@
-
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modules.news_app/layout/NewsApp/Cubit/state.dart';
 
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 import '../../../NetWork/dio_helpper.dart';
 import '../../../modules/NewsApp/Business.dart';
@@ -49,6 +45,7 @@ class NewsCubit extends Cubit<NewsStates> {
 
   void incrementCounter() {
     counter++;
+
     // emit(NewsChangeCounter());
   }
 
@@ -99,15 +96,12 @@ class NewsCubit extends Cubit<NewsStates> {
       "apiKey": "0e78f0c4eaaa4d528b059cad83243fc1",
     }).then((value) {
       business = value.data["articles"];
-      print(value.data["articles"][1]["urlToImage"]);
 
       emit(NewsGetDataBusinessDone());
-      if (kDebugMode) {
-        print(business);
-      }
+      if (kDebugMode) {}
     }).catchError((e) {
       if (kDebugMode) {
-        print(e);
+        print("Error" "  " "$e");
       }
     });
   }
@@ -125,12 +119,11 @@ class NewsCubit extends Cubit<NewsStates> {
         sports = value.data["articles"];
 
         emit(NewsGetDataSportDone());
-        if (kDebugMode) {
-          print(sports);
-        }
+        if (kDebugMode) {}
       }).catchError((e) {
         if (kDebugMode) {
-          print(e);
+          // print(e);
+          print("Error" "  " "$e");
         }
       });
     }
@@ -149,12 +142,10 @@ class NewsCubit extends Cubit<NewsStates> {
         technology = value.data["articles"];
 
         emit(NewsGetDataTechnologyDone());
-        if (kDebugMode) {
-          print(technology);
-        }
+        if (kDebugMode) {}
       }).catchError((e) {
         if (kDebugMode) {
-          print(e);
+          print("Error" "  " "$e");
         }
       });
     }
@@ -162,30 +153,30 @@ class NewsCubit extends Cubit<NewsStates> {
 
   List<dynamic> search = [];
 
-  void getDataSearch(String v) {
+  void getDataSearch(String data) {
     search.clear();
     emit(NewsGetDataSearchLod());
-if(v.isNotEmpty){
-  if (search.isEmpty) {
-    // https://newsapi.org/v2/everything?q=mohamed&apiKey=0e78f0c4eaaa4d528b059cad83243fc1
+    if (data.isNotEmpty) {
+      if (search.isEmpty) {
+        // https://newsapi.org/v2/everything?q=mohamed&apiKey=0e78f0c4eaaa4d528b059cad83243fc1
 
-    DioHelper.getData(url: "v2/everything", query: {
-      "q": "$v",
-      "apiKey": "0e78f0c4eaaa4d528b059cad83243fc1",
-    }).then((value) {
-      search = value.data["articles"];
+        DioHelper.getData(url: "v2/everything", query: {
+          "q": data,
+          "apiKey": "0e78f0c4eaaa4d528b059cad83243fc1",
+        }).then((value) {
+          search = value.data["articles"];
 
-      emit(NewsGetDataSearchDone());
-      if (kDebugMode) {
-        print("search");
-        print(search);
+          emit(NewsGetDataSearchDone());
+          if (kDebugMode) {
+            print("search");
+            // print(search);
+          }
+        }).catchError((e) {
+          if (kDebugMode) {
+            print("Error" "  " "$e");
+          }
+        });
       }
-    }).catchError((e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    });
+    }
   }
-
-}  }
 }
