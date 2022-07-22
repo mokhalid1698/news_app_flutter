@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modules.news_app/layout/%D9%8Dshop_app/Home_Shop_app.dart';
 import 'package:modules.news_app/shared/styles/themes.dart';
 
 
@@ -38,8 +39,8 @@ class MyApp2 extends StatelessWidget {
             themeMode: get.mode ? ThemeMode.dark : ThemeMode.light,
             theme: lightTheme,
             darkTheme: darkTheme,
-            home: const Directionality(
-                textDirection: TextDirection.rtl, child: HomeNews()),
+            home: const HomeShopApp(),
+            // home: const Directionality(textDirection: TextDirection.rtl, child: HomeNews()),
           );
         },
         listener: (_, l) {});
