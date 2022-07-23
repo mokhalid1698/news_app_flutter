@@ -5,10 +5,10 @@ import 'package:modules.news_app/layout/NewsApp/Cubit/state.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../NetWork/dio_helpper.dart';
 import '../../../modules/NewsApp/Business.dart';
 import '../../../modules/NewsApp/sportsScreen.dart';
 import '../../../modules/NewsApp/technology.dart';
+import '../../../shared/NetWork/dio_helpper.dart';
 
 class NewsCubit extends Cubit<NewsStates> {
   NewsCubit() : super(InitialState());

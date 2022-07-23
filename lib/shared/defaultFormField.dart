@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-
-
-
-
-
-
+import 'package:fluttertoast/fluttertoast.dart';
 
 Widget defaultButton({
   double width = double.infinity,
@@ -34,47 +29,48 @@ Widget defaultButton({
       ),
     );
 
+// ignore: non_constant_identifier_names
+void FlutterToast(String text, ToastStates state) => Fluttertoast.showToast(
+    msg: text,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: chooseToastColor(state),
+    textColor: Colors.white,
+    fontSize: 16.0);
 
+enum ToastStates { SUCCESS, ERROR, WARNING }
 
-Widget defaultFormField(
-  Function(String)? onSubmit,
-  Function(String) onChange,
-  VoidCallback onTap,
-  IconData suffix,
-  VoidCallback suffixPressed, {
-  required TextEditingController controller,
-  required TextInputType type,
-  required Function(String)? validate,
-  required String label,
-  required IconData prefix,
-  bool isClickable = true,
-      bool isPassword = false,
+Color chooseToastColor(ToastStates state) {
+  Color color;
 
-    }) =>
-    TextFormField(
-      controller: controller,
-      keyboardType: type,
-      obscureText: isPassword,
-      enabled: isClickable,
-      onFieldSubmitted: onSubmit,
-      onChanged: onChange,
-      onTap: onTap,
-      validator: (v) => validate!(v!),
+  switch (state) {
+    case ToastStates.SUCCESS:
+      color = Colors.green;
+      break;
+    case ToastStates.ERROR:
+      color = Colors.red;
+      break;
+    case ToastStates.WARNING:
+      color = Colors.amber;
+      break;
+  }
 
-      decoration: InputDecoration(
+  return color;
+}
 
-        labelText: label,
-        prefixIcon: Icon(
-          prefix,
-        ),
-        suffixIcon: suffix != null
-            ? IconButton(
-                onPressed: suffixPressed,
-                icon: Icon(
-                  suffix,
-                ),
-              )
-            : null,
-        border: OutlineInputBorder(),
+void navigateTo(context, widget) => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => widget,
+    ));
+
+void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
       ),
+      (route) {
+        return false;
+      },
     );

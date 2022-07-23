@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modules.news_app/NetWork/dio_helpper.dart';
-import 'package:modules.news_app/NetWork/end_points.dart';
+
+import 'package:modules.news_app/models/LoginShopAppModel/Loginmodels.dart';
 import 'package:modules.news_app/modules/shop_app/loginScreen/Cubit/LoginStates.dart';
+
+import '../../../../shared/NetWork/dio_helpper.dart';
+import '../../../../shared/NetWork/end_points.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(InitialStateLogin());
@@ -24,16 +27,34 @@ class LoginCubit extends Cubit<LoginStates> {
     emit(AppLoginShowPasswordState());
   }
 
+  
+  LoginModel? model;
+  
   void getDataLogin({
     required String email,
     required String password,
   }) async {
+    emit(ShopLoginLoadingState());
+
     await DioHelper.postData({}, "",
         url: LOGIN,
         data: {
           'email': email,
           'password': password,
         // ignore: avoid_print
-        }).then((value) => print(value.data.toString()));
+        }).then((value) {
+          
+          
+          model = LoginModel.fromJson(value.data);
+          emit(ShopLoginDoneState(model!));
+          if (kDebugMode) {
+            print(model!.data!.name);
+          }
+        }).catchError((onError){
+
+          print(onError.toString());
+          emit(ShopLoginErrorState());
+
+    });
   }
 }

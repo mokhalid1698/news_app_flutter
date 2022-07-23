@@ -18,18 +18,15 @@ class DioHelper {
     ));
   }
 
-
-  static Future<Response> postData(  Map<String, dynamic> query, String token,{
+  static Future<Response> postData(
+    Map<String, dynamic> query,
+    String token, {
     required String url,
     required Map<String, dynamic> data,
-
     String lang = 'en',
-
-  }) async
-  {
-    dio!.options.headers =
-    {
-      'lang':lang,
+  }) async {
+    dio!.options.headers = {
+      'lang': lang,
       'Authorization': token,
       'Content-Type': 'application/json',
     };
@@ -47,17 +44,27 @@ class DioHelper {
     return await dio!.get(url, queryParameters: query);
   }
 
-  static Future<Response> postData1(
-      Map<String, dynamic> query,
-    String token,
-      {
+  static Future<Response> getDataShop(Map<String, dynamic> query,
+      String token,
+      {required String url,  String lang = 'en',}) async {
+    dio!.options.headers = {
+      'lang': lang,
+      'Authorization': token,
+      'Content-Type': 'application/json',
+    };
+    return await dio!.get(url, queryParameters: query);
+  }
+
+  static Future<Response> postDataShop(
+    Map<String, dynamic> query,
+    String token, {
     String lang = 'en',
     required String url,
     required Map<String, dynamic> data,
   }) async {
     dio!.options.headers = {
       'lang': lang,
-      'Authorization': token  ,
+      'Authorization': token,
       'Content-Type': 'application/json',
     };
     return await dio!.post(url, queryParameters: query, data: data);
