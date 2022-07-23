@@ -11,6 +11,7 @@ class HomeShopApp extends StatelessWidget {
     return BlocConsumer<ShopCubit,ShopStates>(builder:(context, state) {
       var get = ShopCubit.get(context);
       return Scaffold(
+
         appBar: AppBar(
           title: const Text("Salla", style: TextStyle(color: Colors.teal)),
         ),

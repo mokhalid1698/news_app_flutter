@@ -1,7 +1,9 @@
+import 'package:buildcondition/buildcondition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modules.news_app/layout/shop_app/Cubit/ShopCubit.dart';
 import 'package:modules.news_app/layout/shop_app/Cubit/ShopStates.dart';
+import 'package:modules.news_app/models/categoriesModel/ModelCategories.dart';
 import 'package:modules.news_app/shared/NetWork/end_points.dart';
 
 import '../../../shared/local/Shared_Preferences.dart';
@@ -14,121 +16,165 @@ class ProductsScreen extends StatelessWidget {
     return BlocConsumer<ShopCubit, ShopStates>(
         builder: (context, state) {
           var get = ShopCubit.get(context);
-          if (state is ShopAppGetDataHomeLoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: [
-                  //     const Text("Categories",
-                  //         style: TextStyle(
-                  //             fontWeight: FontWeight.bold, fontSize: 30)),
-                  //     const SizedBox(
-                  //       height: 15,
-                  //     ),
-                  //     SizedBox(
-                  //       height: 180,
-                  //       // color: Colors.black45,
-                  //       child: ListView.separated(
-                  //           shrinkWrap: true,
-                  //           scrollDirection: Axis.horizontal,
-                  //           physics: BouncingScrollPhysics(),
-                  //           itemBuilder: (context, index) =>
-                  //               BiuldFormCategories(),
-                  //           separatorBuilder: (context, index) =>
-                  //           const SizedBox(
-                  //             width: 50.0,
-                  //           ),
-                  //           itemCount: 10),
-                  //     ),
-                  //   ],
-                  // ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text("Categories",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 25)),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        SizedBox(
-                          height: 180,
-                          // color: Colors.black45,
-                          child: ListView.separated(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) =>
-                                  BiuldFormCategories(),
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                    width: 50.0,
-                                  ),
-                              itemCount: 10),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Text("Home",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 25)),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        GridView.count(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 1.0,
-                          crossAxisSpacing: 1.0,
-                          childAspectRatio: 1 / 1.7,
-                          children: List.generate(
-                              get.modelDataHome!.data!.products.length,
-                              (index) {
-                            var data = get.modelDataHome!.data!.products[index];
-                            return BiuldFormHomeData(data);
-                          }),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+
+            return BuildCondition(
+              condition: get.modelDataHome != null && get.modelCategories != null ,
+              builder: (context)=>SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text("Categories",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 25)),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                            height: 180,
+                            // color: Colors.black45,
+                            child: ListView.separated(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  var data = get.modelCategories!.data!.data[index];
+                                  return BiuldFormCategories(data);
+                                },
+                                separatorBuilder: (context, index) =>
+                                const SizedBox(
+                                  width: 50.0,
+                                ),
+                                itemCount: get.modelCategories!.data!.data.length),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          const Text("Home",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 25)),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          GridView.count(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 1.0,
+                            crossAxisSpacing: 3.0,
+                            childAspectRatio: 1 / 1.81,
+                            children: List.generate(
+                                get.modelDataHome!.data!.products.length,
+                                    (index) {
+                                  var data = get.modelDataHome!.data!.products[index];
+                                  return BiuldFormHomeData(data);
+                                }),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )  ,
+              fallback: (context)=> const Center(child: CircularProgressIndicator()),
             );
-          }
+
+            // return SingleChildScrollView(
+            //   physics: const BouncingScrollPhysics(),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     mainAxisAlignment: MainAxisAlignment.start,
+            //     children: [
+            //
+            //       Padding(
+            //         padding: const EdgeInsets.all(10.0),
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           mainAxisAlignment: MainAxisAlignment.start,
+            //           children: [
+            //             const Text("Categories",
+            //                 style: TextStyle(
+            //                     fontWeight: FontWeight.bold, fontSize: 25)),
+            //             const SizedBox(
+            //               height: 15,
+            //             ),
+            //             SizedBox(
+            //               height: 180,
+            //               // color: Colors.black45,
+            //               child: ListView.separated(
+            //                   shrinkWrap: true,
+            //                   scrollDirection: Axis.horizontal,
+            //                   physics: const BouncingScrollPhysics(),
+            //                   itemBuilder: (context, index) {
+            //                     var data = get.modelCategories!.data!.data[index];
+            //                     return BiuldFormCategories(data);
+            //                   },
+            //                   separatorBuilder: (context, index) =>
+            //                       const SizedBox(
+            //                         width: 50.0,
+            //                       ),
+            //                   itemCount: get.modelCategories!.data!.data.length),
+            //             ),
+            //             const SizedBox(
+            //               height: 15,
+            //             ),
+            //             const Text("Home",
+            //                 style: TextStyle(
+            //                     fontWeight: FontWeight.bold, fontSize: 25)),
+            //             const SizedBox(
+            //               height: 15,
+            //             ),
+            //             GridView.count(
+            //               shrinkWrap: true,
+            //               physics: const NeverScrollableScrollPhysics(),
+            //               crossAxisCount: 2,
+            //               mainAxisSpacing: 1.0,
+            //               crossAxisSpacing: 1.0,
+            //               childAspectRatio: 1 / 1.7,
+            //               children: List.generate(
+            //                   get.modelDataHome!.data!.products.length,
+            //                   (index) {
+            //                 var data = get.modelDataHome!.data!.products[index];
+            //                 return BiuldFormHomeData(data);
+            //               }),
+            //             )
+            //           ],
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // );
+
         },
         listener: (context, state) {});
   }
 
   // ignore: non_constant_identifier_names
-  Widget BiuldFormCategories() => SizedBox(
+  Widget BiuldFormCategories(ModelCategoriesDataInData data) => SizedBox(
         height: 100,
         width: 100,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children:  [
             CircleAvatar(
               radius: 60,
               backgroundImage: NetworkImage(
-                  "https://student.valuxapps.com/storage/uploads/categories/16301438353uCFh.29118.jpg"),
+                  "${data.image}"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 7,
             ),
             Text(
-              "electrionic devices",
+              "${data.name}",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
@@ -140,6 +186,8 @@ class ProductsScreen extends StatelessWidget {
 
   // ignore: non_constant_identifier_names
   Widget BiuldFormHomeData(data) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             decoration: BoxDecoration(
@@ -154,21 +202,28 @@ class ProductsScreen extends StatelessWidget {
               ],
               borderRadius: BorderRadius.circular(20),
             ),
-            height: 250,
+            height: 280,
             width: 200,
-            child: Image(
-              image: NetworkImage("${data.image}"),
-              height: 150,
-              width: 150,
-              fit: BoxFit.contain,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Image(
+                image: NetworkImage("${data.image}"),
+
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           Row(
             children: [
-              Expanded(
+              SizedBox(
+                width: 100,
                 child: Text("${data.name}",
+
                     maxLines: 2,
+
                     style: const TextStyle(
+                    height: 1,
+                      fontSize: 14,
                       overflow: TextOverflow.ellipsis,
                     )),
               ),
@@ -184,7 +239,7 @@ class ProductsScreen extends StatelessWidget {
               ),
               Text(
                 "${data.oldPrice}",
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 10, decoration: TextDecoration.lineThrough),
               ),
             ],

@@ -40,6 +40,7 @@ ThemeData darkTheme = ThemeData(
       )),
 );
 ThemeData lightTheme = ThemeData(
+  scaffoldBackgroundColor: Colors.grey.shade300,
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     selectedItemColor: Colors.teal,
     unselectedItemColor: Colors.black45,
