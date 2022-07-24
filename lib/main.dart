@@ -21,31 +21,19 @@ void main() async {
     Widget? widget;
     DioHelper.init();
     await CacheHelper.init();
-    token =  await CacheHelper.getData(key: "token");
+    token = await CacheHelper.getData(key: "token") ?? "";
     if (kDebugMode) {
       print(token.toString());
     }
 
     // ignore: unnecessary_null_comparison
-    if (token != null) {
+    if (token.isNotEmpty) {
       widget = const HomeShopApp();
     } else {
       widget = LoginScreen();
     }
     runApp(MyApp2(startWidget: widget));
   }, blocObserver: MyBlocObserver());
-  // DioHelper.init();
-  // await CacheHelper.init();
-  // token = await CacheHelper.getData(key: "token");
-  // // print(token);
-  // Widget widget;
-  // // ignore: unnecessary_null_comparison
-  // if (token != null) {
-  //   widget = const HomeShopApp();
-  // } else {
-  //   widget = LoginScreen();
-  // }
-  // BlocObserver = MyBlocObserver();
 }
 
 //test mohamed khalid git
