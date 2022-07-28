@@ -8,48 +8,51 @@ class HomeShopApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ShopCubit,ShopStates>(builder:(context, state) {
-      var get = ShopCubit.get(context);
-      return Scaffold(
-
-        appBar: AppBar(
-          title: const Text("Salla", style: TextStyle(color: Colors.teal)),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: get.currentIndexChange,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              label: 'Home',
+    return BlocConsumer<ShopCubit, ShopStates>(
+        builder: (context, state) {
+          var get = ShopCubit.get(context);
+          return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                get.getFavoritesAll();
+              },
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.apps,
-              ),
-              label: 'Categories',
+            appBar: AppBar(
+              title: const Text("Salla", style: TextStyle(color: Colors.teal)),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite,
-              ),
-              label: 'Favorites',
+            bottomNavigationBar: BottomNavigationBar(
+              onTap: get.currentIndexChange,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                  ),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.apps,
+                  ),
+                  label: 'Categories',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.favorite,
+                  ),
+                  label: 'Favorites',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.settings,
+                  ),
+                  label: 'Settings',
+                ),
+              ],
+              currentIndex: get.currentIndex,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-              ),
-              label: 'Settings',
-            ),
-          ],
-          currentIndex: get.currentIndex,
-
-        ),
-        body: get.screensList[get.currentIndex],
-      );
-    }, listener: (context, state) {
-
-    });
+            body: get.screensList[get.currentIndex],
+          );
+        },
+        listener: (context, state) {});
   }
 }

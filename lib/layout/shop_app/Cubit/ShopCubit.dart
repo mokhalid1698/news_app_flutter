@@ -43,6 +43,8 @@ class ShopCubit extends Cubit<ShopStates> {
       token,
       url: HOME,
     ).then((value) {
+
+      print(value.data);
       modelDataHome = HomeModel.fromJson(value.data);
       modelDataHome!.data!.products.forEach((element) {
         isFavorite?.addAll({
@@ -55,7 +57,7 @@ class ShopCubit extends Cubit<ShopStates> {
       getDataCategories();
       emit(ShopAppGetDataHomeDoneState());
       if (kDebugMode) {
-        // print(modelDataHome!.data);
+        print(modelDataHome!.data);
       }
     }).catchError((onError) {
       emit(ShopAppGetDataHomeErrorState());
@@ -94,7 +96,7 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   ModelFavorites? modelFavorites;
-  bool? nk= true;
+
   void getDataChangeFavorites(int id) async {
     if (kDebugMode) {
       print(isFavorite![id].toString() + "up");
@@ -136,5 +138,18 @@ class ShopCubit extends Cubit<ShopStates> {
         print(onError.toString() + "ChangeFavorites");
       }
     });
+  }
+
+  ModelGetFavorites? modelGetFavorites;
+  
+  void getFavoritesAll()async{
+    DioHelper.getDataShop({}, token, url: Favorites).then((value){
+
+     modelGetFavorites = ModelGetFavorites.fromJson(value.data);
+
+     print(modelGetFavorites!.data!.data![0].product!.name);
+
+    } );
+    
   }
 }
