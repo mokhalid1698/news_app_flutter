@@ -12,13 +12,12 @@ class HomeShopApp extends StatelessWidget {
         builder: (context, state) {
           var get = ShopCubit.get(context);
           return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                get.getFavoritesAll();
-              },
-            ),
+            // floatingActionButton: FloatingActionButton(onPressed: () {
+            //   get.getDataProfile();
+            // },),
             appBar: AppBar(
               title: const Text("Salla", style: TextStyle(color: Colors.teal)),
+              centerTitle: true,
             ),
             bottomNavigationBar: BottomNavigationBar(
               onTap: get.currentIndexChange,

@@ -50,7 +50,11 @@ class MyApp2 extends StatelessWidget {
             create: (context) => NewsCubit()..getModeOfSharedPreferences(),
           ),
           BlocProvider(
-            create: (context) => ShopCubit()..getDataHome(),
+            create: (context) => ShopCubit()
+              ..getDataHome()
+              ..getDataCategories()
+              ..getFavoritesAll()
+              ..getDataProfile(),
           )
         ],
         child: BlocConsumer<NewsCubit, NewsStates>(

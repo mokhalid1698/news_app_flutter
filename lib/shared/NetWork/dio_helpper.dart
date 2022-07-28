@@ -44,9 +44,12 @@ class DioHelper {
     return await dio!.get(url, queryParameters: query);
   }
 
-  static Future<Response> getDataShop(Map<String, dynamic> query,
-      String token,
-      {required String url,  String lang = 'en',}) async {
+  static Future<Response> getDataShop(
+    Map<String, dynamic> query,
+    String token, {
+    required String url,
+    String lang = 'en',
+  }) async {
     dio!.options.headers = {
       'lang': lang,
       'Authorization': token,
@@ -68,5 +71,20 @@ class DioHelper {
       'Content-Type': 'application/json',
     };
     return await dio!.post(url, queryParameters: query, data: data);
+  }
+
+  static Future<Response> putDataShop(
+    Map<String, dynamic> query,
+    String token, {
+    String lang = 'en',
+    required String url,
+    required Map<String, dynamic> data,
+  }) async {
+    dio!.options.headers = {
+      'lang': lang,
+      'Authorization': token,
+      'Content-Type': 'application/json',
+    };
+    return await dio!.put(url, queryParameters: query, data: data);
   }
 }

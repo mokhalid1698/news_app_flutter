@@ -11,6 +11,10 @@ class CacheHelper {
     return sharedPreferences!.get(key);
   }
 
+  static Future<bool> logout({required String key}) async {
+    return sharedPreferences!.remove(key);
+  }
+
   static Future<bool> saveData(
       {required String key, required dynamic value}) async {
     if (value is String) return await sharedPreferences!.setString(key, value);

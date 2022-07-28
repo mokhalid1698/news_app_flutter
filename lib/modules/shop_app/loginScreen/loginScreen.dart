@@ -27,12 +27,12 @@ class LoginScreen extends StatelessWidget {
               if (kDebugMode) {
                 print(state.model.message);
               }
-
               CacheHelper.saveData(key: "token", value: state.model.data?.token)
                   .then((value) {
-                    print(state.model.data?.token);
-                    navigateTo(context, const HomeShopApp());
-
+                if (kDebugMode) {
+                  print("${state.model.data?.token.toString()}" "LoginCubit"  );
+                }
+                navigateAndFinish(context, const HomeShopApp());
               });
             } else {
               FlutterToast(state.model.message!, ToastStates.ERROR);
@@ -137,7 +137,10 @@ class LoginScreen extends StatelessWidget {
                           },
                           text: "Login",
                           background: Theme.of(context).primaryColor,
-                        )
+                        ),
+
+                        if(state is ShopLoginLoadingState )
+                          const LinearProgressIndicator()
                       ],
                     ),
                   ),
