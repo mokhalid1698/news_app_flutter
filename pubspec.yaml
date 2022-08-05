@@ -43,6 +43,12 @@ dependencies:
   fluttertoast: ^8.0.9
   buildcondition: ^0.0.4
   carousel_slider: ^4.1.1
+  qr_flutter:
+  qr_code_scanner: ^1.0.0
+  flutter_barcode_scanner: ^2.0.0
+  mobile_scanner: ^2.0.0
+  image_picker: ^0.8.5+3
+  google_mobile_ads: ^2.0.0
 
 
 dev_dependencies:
@@ -87,12 +93,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+     - family: Wahran
+       fonts:
+         - asset: assets/fonts/ArbFONTS-Wahran-Bold.otf
+         - asset: assets/fonts/ArbFONTS-Wahran-Regular.otf
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

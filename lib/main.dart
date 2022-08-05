@@ -1,10 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:modules.news_app/layout/QrApp/HomeQr.dart';
 import 'package:modules.news_app/layout/shop_app/Cubit/ShopCubit.dart';
 import 'package:modules.news_app/layout/shop_app/Home_Shop_app.dart';
 import 'package:modules.news_app/modules/shop_app/loginScreen/loginScreen.dart';
 import 'package:modules.news_app/shared/NetWork/end_points.dart';
+import 'package:modules.news_app/shared/ads_helper/adsHelper.dart';
 import 'package:modules.news_app/shared/local/Shared_Preferences.dart';
 import 'package:modules.news_app/shared/styles/themes.dart';
 
@@ -16,7 +19,9 @@ import 'shared/NetWork/dio_helpper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  MobileAds.instance.initialize();
+  AdsHelper.myBanner.load();
+  AdsHelper.loadBanner();
   BlocOverrides.runZoned(() async {
     Widget? widget;
     DioHelper.init();
@@ -65,7 +70,7 @@ class MyApp2 extends StatelessWidget {
                 themeMode: get.mode ? ThemeMode.dark : ThemeMode.light,
                 theme: lightTheme,
                 darkTheme: darkTheme,
-                home: startWidget,
+                home: const HomeQr(),
                 // home: const Directionality(textDirection: TextDirection.rtl, child: HomeNews()),
               );
             },

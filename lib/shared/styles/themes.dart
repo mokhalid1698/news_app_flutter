@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 ThemeData darkTheme = ThemeData(
+  fontFamily: "Wahran",
   scaffoldBackgroundColor: Colors.black26,
   primarySwatch: Colors.teal,
   disabledColor: Colors.white60,
@@ -40,6 +41,7 @@ ThemeData darkTheme = ThemeData(
       )),
 );
 ThemeData lightTheme = ThemeData(
+  fontFamily: "Wahran",
   // scaffoldBackgroundColor: Colors.grey.shade300,
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     selectedItemColor: Colors.teal,
