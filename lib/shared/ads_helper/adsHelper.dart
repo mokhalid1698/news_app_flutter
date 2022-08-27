@@ -76,6 +76,7 @@ class AdsHelper {
 
 
   static InterstitialAd? interstitialAd;
+  static bool isDone = false;
   static void loadBanner() {
     final adUnitId = Platform.isAndroid
         ? '	ca-app-pub-3940256099942544/1033173712'
@@ -112,6 +113,8 @@ class AdsHelper {
           );
 
           print("object");
+
+          isDone = true;
 
         },
         onAdFailedToLoad: (error) {

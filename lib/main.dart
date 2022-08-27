@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:modules.news_app/layout/NewsApp/Home_News.dart';
 import 'package:modules.news_app/layout/QrApp/HomeQr.dart';
+import 'package:modules.news_app/layout/TestWeb/test_web.dart';
 import 'package:modules.news_app/layout/shop_app/Cubit/ShopCubit.dart';
 import 'package:modules.news_app/layout/shop_app/Home_Shop_app.dart';
 import 'package:modules.news_app/modules/shop_app/loginScreen/loginScreen.dart';
@@ -52,7 +54,11 @@ class MyApp2 extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => NewsCubit()..getModeOfSharedPreferences(),
+            create: (context) => NewsCubit()
+              ..getModeOfSharedPreferences()
+              ..getDataBusiness()
+              ..getDataBusiness()
+              ..getDataSports(),
           ),
           BlocProvider(
             create: (context) => ShopCubit()
@@ -70,7 +76,7 @@ class MyApp2 extends StatelessWidget {
                 themeMode: get.mode ? ThemeMode.dark : ThemeMode.light,
                 theme: lightTheme,
                 darkTheme: darkTheme,
-                home: const HomeQr(),
+                home: const HomeNews(),
                 // home: const Directionality(textDirection: TextDirection.rtl, child: HomeNews()),
               );
             },

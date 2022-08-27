@@ -5,18 +5,18 @@ class DioHelper {
   static Dio? dio;
 
 // New APP
-  // static init() {
-  //   dio = Dio(BaseOptions(
-  //     baseUrl: "https://newsapi.org/",
-  //     receiveDataWhenStatusError: true,
-  //   ));
-  // }
   static init() {
     dio = Dio(BaseOptions(
-      baseUrl: "https://student.valuxapps.com/api/",
+      baseUrl: "https://newsapi.org/",
       receiveDataWhenStatusError: true,
     ));
   }
+  // static init() {
+  //   dio = Dio(BaseOptions(
+  //     baseUrl: "https://student.valuxapps.com/api/",
+  //     receiveDataWhenStatusError: true,
+  //   ));
+  // }
 
   static Future<Response> postData(
     Map<String, dynamic> query,

@@ -17,14 +17,32 @@ class HomeQr extends StatelessWidget {
       appBar: AppBar(
         elevation: 2,
       ),
-      body: HomeOne(),
+      body: const HomeOne(),
     );
   }
 }
 
-class HomeOne extends StatelessWidget {
+class HomeOne extends StatefulWidget {
   const HomeOne({Key? key}) : super(key: key);
 
+  @override
+  State<HomeOne> createState() => _HomeOneState();
+}
+
+
+
+
+class _HomeOneState extends State<HomeOne> {
+
+@override
+  void dispose() {
+
+  AdsHelper.interstitialAd!.dispose();
+  AdsHelper.myBanner!.dispose();
+
+  // TODO: implement dispose
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -42,9 +60,24 @@ class HomeOne extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () async {
+                      print(AdsHelper.isDone.toString() + "hhhhhhhhhhhhh");
+                      if (AdsHelper.isDone) {
+                        AdsHelper.interstitialAd!.show();
+                        Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BarcodeScannerWithController()))
+                            .then((value) {
 
-                      Navigator.push(context, MaterialPageRoute(builder:(context) =>  BarcodeScannerWithController()));
-                      await AdsHelper.interstitialAd!.show();
+                        });
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const BarcodeScannerWithController()));
+                      }
                     },
                     child: Container(
                       width: 150,
@@ -61,10 +94,21 @@ class HomeOne extends StatelessWidget {
                           ],
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.indigo),
-                      child: const Center(
-                          child: Text(
-                        "انشاء",
-                        style: TextStyle(fontSize: 20),
+                      child: Center(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.qr_code,
+                            size: 100,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "  Qr انشاء",
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        ],
                       )),
                     ),
                   ),
@@ -84,6 +128,20 @@ class HomeOne extends StatelessWidget {
                           ],
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.indigo),
+                      child: Center(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.qr_code_scanner_outlined,
+                              size: 100, color: Colors.white),
+                          Text(
+                            " Qr مسح  ",
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      )),
                     ),
                   ),
                 ],
@@ -115,7 +173,6 @@ class _BarcodeScannerWithControllerState
   String? barcode;
 
   MobileScannerController controller = MobileScannerController(
-    torchEnabled: true,
     // formats: [BarcodeFormat.qrCode]
 
     facing: CameraFacing.back,
@@ -167,176 +224,553 @@ class _BarcodeScannerWithControllerState
   @override
   Widget build(BuildContext context) {
     print(barcode);
-    return  const Scaffold(
+    return Scaffold(
+        appBar: AppBar(),
         // backgroundColor: Colors.black,
-        body:   Center(child: Text("data")) );
-  }
+        body: Column(
+          children: [
+            // AdsHelper.adContainer,
+            Expanded(
+              child: Stack(
+                children: [
+                  MobileScanner(
+                    controller: controller,
+                    fit: BoxFit.contain,
 
- QrBody(BuildContext context) async {
-    return Column(
-        children: [
-          AdsHelper.adContainer,
-          Expanded(
-            child: Stack(
-              children: [
-                MobileScanner(
-                  controller: controller,
-                  fit: BoxFit.contain,
-
-                  // controller: MobileScannerController(
-                  //   torchEnabled: true,
-                  //   facing: CameraFacing.front,
-                  // ),
-                  onDetect: (barcode, args) {
-
-                    setState(() {
-                      this.barcode = barcode.rawValue!;
-                    });
-                  },
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20))),
-                    height: 200,
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 100,
-                                child: IconButton(
-                                  color: Colors.black26,
-                                  icon: ValueListenableBuilder(
-                                    valueListenable: controller.torchState,
-                                    builder: (context, state, child) {
-                                      if (state == null) {
-                                        return const Icon(
-                                          Icons.flash_off,
-                                          color: Colors.grey,
-                                        );
-                                      }
-                                      switch (state as TorchState) {
-                                        case TorchState.off:
+                    // controller: MobileScannerController(
+                    //   torchEnabled: true,
+                    //   facing: CameraFacing.front,
+                    // ),
+                    onDetect: (barcode, args) {
+                      setState(() {
+                        this.barcode = barcode.rawValue!;
+                      });
+                    },
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20))),
+                      height: 200,
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 100,
+                                  child: IconButton(
+                                    color: Colors.black26,
+                                    icon: ValueListenableBuilder(
+                                      valueListenable: controller.torchState,
+                                      builder: (context, state, child) {
+                                        if (state == null) {
                                           return const Icon(
-                                            Icons.flash_off_outlined,
+                                            Icons.flash_off,
                                             color: Colors.grey,
                                           );
-                                        case TorchState.on:
+                                        }
+                                        switch (state as TorchState) {
+                                          case TorchState.off:
+                                            return const Icon(
+                                              Icons.flash_off_outlined,
+                                              color: Colors.grey,
+                                            );
+                                          case TorchState.on:
+                                            return const Icon(
+                                              Icons.flash_on_outlined,
+                                              color: Colors.yellow,
+                                            );
+                                        }
+                                      },
+                                    ),
+                                    iconSize: 32.0,
+                                    onPressed: () => controller.toggleTorch(),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                  child: IconButton(
+                                    color: Colors.black26,
+                                    icon: isStarted
+                                        ? const Icon(Icons.stop_outlined)
+                                        : const Icon(Icons.play_arrow_outlined),
+                                    iconSize: 32.0,
+                                    onPressed: () => setState(() {
+                                      isStarted
+                                          ? controller.stop()
+                                          : controller.start();
+                                      isStarted = !isStarted;
+                                    }),
+                                  ),
+                                ),
+                                IconButton(
+                                  color: Colors.black26,
+                                  icon: ValueListenableBuilder(
+                                    valueListenable:
+                                        controller.cameraFacingState,
+                                    builder: (context, state, child) {
+                                      if (kDebugMode) {
+                                        print("state : $state");
+                                      }
+
+                                      if (state == null) {
+                                        return const Icon(Icons.camera_front);
+                                      }
+                                      switch (state as CameraFacing) {
+                                        case CameraFacing.front:
                                           return const Icon(
-                                            Icons.flash_on_outlined,
-                                            color: Colors.yellow,
-                                          );
+                                              Icons.camera_front_outlined);
+                                        case CameraFacing.back:
+                                          return const Icon(
+                                              Icons.camera_rear_outlined);
                                       }
                                     },
                                   ),
                                   iconSize: 32.0,
-                                  onPressed: () => controller.toggleTorch(),
+                                  onPressed: () => controller.switchCamera(),
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                  child: IconButton(
+                                    color: Colors.black26,
+                                    icon: const Icon(Icons.image_outlined),
+                                    iconSize: 32.0,
+                                    onPressed: () async {
+                                      final ImagePicker picker = ImagePicker();
+                                      // Pick an image
+                                      final XFile? image =
+                                          await picker.pickImage(
+                                        source: ImageSource.gallery,
+                                      );
+                                      if (image != null) {
+                                        if (await controller
+                                            .analyzeImage(image.path)) {
+                                          if (!mounted) return;
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Barcode found!'),
+                                              backgroundColor: Colors.green,
+                                            ),
+                                          );
+                                        } else {
+                                          if (!mounted) return;
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content:
+                                                  Text('No barcode found!'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          Center(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width - 200,
+                              height: 50,
+                              child: InkWell(
+                                onHover: (value) => "Copy",
+                                onTap: () {
+                                  Clipboard.setData(
+                                          ClipboardData(text: barcode))
+                                      .then((value) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Copy'),
+                                        backgroundColor: Colors.blueAccent,
+                                      ),
+                                    );
+                                    _interstitialAd!.show();
+                                  });
+                                },
+                                child: FittedBox(
+                                  child: Text(
+                                    barcode ?? 'Scan something!',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 100,
-                                child: IconButton(
-                                  color: Colors.black26,
-                                  icon: isStarted
-                                      ? const Icon(Icons.stop_outlined)
-                                      : const Icon(Icons.play_arrow_outlined),
-                                  iconSize: 32.0,
-                                  onPressed: () => setState(() {
-                                    isStarted
-                                        ? controller.stop()
-                                        : controller.start();
-                                    isStarted = !isStarted;
-                                  }),
+                            ),
+                          ),
+
+                          if (barcode?.length != null)
+                            Center(
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width - 200,
+                                height: 50,
+                                child: InkWell(
+                                  onTap: () {
+                                    Clipboard.setData(
+                                            ClipboardData(text: barcode))
+                                        .then((value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Copy'),
+                                          backgroundColor: Colors.blueAccent,
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  child: const Text(
+                                    'Click to copy',
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.indigoAccent,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              IconButton(
+                            ),
+
+                          // Align(
+                          //   alignment: Alignment.bottomCenter,
+                          //   child: Container(
+                          //     alignment: Alignment.bottomCenter,
+                          //     height: 100,
+                          //     color: Colors.black.withOpacity(0.4),
+                          //     child: Row(
+                          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //       children: [
+                          //         IconButton(
+                          //           color: Colors.white,
+                          //           icon: ValueListenableBuilder(
+                          //             valueListenable: controller.torchState,
+                          //             builder: (context, state, child) {
+                          //               if (state == null) {
+                          //                 return const Icon(
+                          //                   Icons.flash_off,
+                          //                   color: Colors.grey,
+                          //                 );
+                          //               }
+                          //               switch (state as TorchState) {
+                          //                 case TorchState.off:
+                          //                   return const Icon(
+                          //                     Icons.flash_off,
+                          //                     color: Colors.grey,
+                          //                   );
+                          //                 case TorchState.on:
+                          //                   return const Icon(
+                          //                     Icons.flash_on,
+                          //                     color: Colors.yellow,
+                          //                   );
+                          //               }
+                          //             },
+                          //           ),
+                          //           iconSize: 32.0,
+                          //           onPressed: () => controller.toggleTorch(),
+                          //         ),
+                          //         IconButton(
+                          //           color: Colors.white,
+                          //           icon: isStarted
+                          //               ? const Icon(Icons.stop)
+                          //               : const Icon(Icons.play_arrow),
+                          //           iconSize: 32.0,
+                          //           onPressed: () => setState(() {
+                          //             isStarted ? controller.stop() : controller.start();
+                          //             isStarted = !isStarted;
+                          //           }),
+                          //         ),
+                          //         Center(
+                          //           child: SizedBox(
+                          //             width: MediaQuery.of(context).size.width - 200,
+                          //             height: 50,
+                          //             child: FittedBox(
+                          //               child: Text(
+                          //                 barcode ?? 'Scan something!',
+                          //                 overflow: TextOverflow.fade,
+                          //                 style: Theme.of(context)
+                          //                     .textTheme
+                          //                     .headline4!
+                          //                     .copyWith(color: Colors.white),
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //         IconButton(
+                          //           color: Colors.white,
+                          //           icon: ValueListenableBuilder(
+                          //             valueListenable: controller.cameraFacingState,
+                          //             builder: (context, state, child) {
+                          //               if (kDebugMode) {
+                          //                 print("state : $state");
+                          //               }
+                          //
+                          //               if (state == null) {
+                          //                 return const Icon(Icons.camera_front);
+                          //               }
+                          //               switch (state as CameraFacing) {
+                          //                 case CameraFacing.front:
+                          //                   return const Icon(Icons.camera_front);
+                          //                 case CameraFacing.back:
+                          //                   return const Icon(Icons.camera_rear);
+                          //               }
+                          //
+                          //
+                          //             },
+                          //           ),
+                          //           iconSize: 32.0,
+                          //           onPressed: () => controller.switchCamera(),
+                          //         ),
+                          //         IconButton(
+                          //           color: Colors.white,
+                          //           icon: const Icon(Icons.image),
+                          //           iconSize: 32.0,
+                          //           onPressed: () async {
+                          //             final ImagePicker picker = ImagePicker();
+                          //             // Pick an image
+                          //             final XFile? image = await picker.pickImage(
+                          //               source: ImageSource.gallery,
+                          //             );
+                          //             if (image != null) {
+                          //               if (await controller.analyzeImage(image.path)) {
+                          //                 if (!mounted) return;
+                          //                 ScaffoldMessenger.of(context).showSnackBar(
+                          //                   const SnackBar(
+                          //                     content: Text('Barcode found!'),
+                          //                     backgroundColor: Colors.green,
+                          //                   ),
+                          //                 );
+                          //               } else {
+                          //                 if (!mounted) return;
+                          //                 ScaffoldMessenger.of(context).showSnackBar(
+                          //                   const SnackBar(
+                          //                     content: Text('No barcode found!'),
+                          //                     backgroundColor: Colors.red,
+                          //                   ),
+                          //                 );
+                          //               }
+                          //             }
+                          //           },
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ));
+  }
+
+  QrBody(BuildContext context) async {
+    return Column(
+      children: [
+        AdsHelper.adContainer,
+        Expanded(
+          child: Stack(
+            children: [
+              MobileScanner(
+                controller: controller,
+                fit: BoxFit.contain,
+
+                // controller: MobileScannerController(
+                //   torchEnabled: true,
+                //   facing: CameraFacing.front,
+                // ),
+                onDetect: (barcode, args) {
+                  setState(() {
+                    this.barcode = barcode.rawValue!;
+                  });
+                },
+              ),
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              child: IconButton(
                                 color: Colors.black26,
                                 icon: ValueListenableBuilder(
-                                  valueListenable:
-                                  controller.cameraFacingState,
+                                  valueListenable: controller.torchState,
                                   builder: (context, state, child) {
-                                    if (kDebugMode) {
-                                      print("state : $state");
-                                    }
-
                                     if (state == null) {
-                                      return const Icon(Icons.camera_front);
+                                      return const Icon(
+                                        Icons.flash_off,
+                                        color: Colors.grey,
+                                      );
                                     }
-                                    switch (state as CameraFacing) {
-                                      case CameraFacing.front:
+                                    switch (state as TorchState) {
+                                      case TorchState.off:
                                         return const Icon(
-                                            Icons.camera_front_outlined);
-                                      case CameraFacing.back:
+                                          Icons.flash_off_outlined,
+                                          color: Colors.grey,
+                                        );
+                                      case TorchState.on:
                                         return const Icon(
-                                            Icons.camera_rear_outlined);
+                                          Icons.flash_on_outlined,
+                                          color: Colors.yellow,
+                                        );
                                     }
                                   },
                                 ),
                                 iconSize: 32.0,
-                                onPressed: () => controller.switchCamera(),
+                                onPressed: () => controller.toggleTorch(),
                               ),
-                              SizedBox(
-                                width: 100,
-                                child: IconButton(
-                                  color: Colors.black26,
-                                  icon: const Icon(Icons.image_outlined),
-                                  iconSize: 32.0,
-                                  onPressed: () async {
-                                    final ImagePicker picker = ImagePicker();
-                                    // Pick an image
-                                    final XFile? image =
-                                    await picker.pickImage(
-                                      source: ImageSource.gallery,
-                                    );
-                                    if (image != null) {
-                                      if (await controller
-                                          .analyzeImage(image.path)) {
-                                        if (!mounted) return;
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Barcode found!'),
-                                            backgroundColor: Colors.green,
-                                          ),
-                                        );
-                                      } else {
-                                        if (!mounted) return;
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content:
-                                            Text('No barcode found!'),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                      }
+                            ),
+                            SizedBox(
+                              width: 100,
+                              child: IconButton(
+                                color: Colors.black26,
+                                icon: isStarted
+                                    ? const Icon(Icons.stop_outlined)
+                                    : const Icon(Icons.play_arrow_outlined),
+                                iconSize: 32.0,
+                                onPressed: () => setState(() {
+                                  isStarted
+                                      ? controller.stop()
+                                      : controller.start();
+                                  isStarted = !isStarted;
+                                }),
+                              ),
+                            ),
+                            IconButton(
+                              color: Colors.black26,
+                              icon: ValueListenableBuilder(
+                                valueListenable: controller.cameraFacingState,
+                                builder: (context, state, child) {
+                                  if (kDebugMode) {
+                                    print("state : $state");
+                                  }
+
+                                  if (state == null) {
+                                    return const Icon(Icons.camera_front);
+                                  }
+                                  switch (state as CameraFacing) {
+                                    case CameraFacing.front:
+                                      return const Icon(
+                                          Icons.camera_front_outlined);
+                                    case CameraFacing.back:
+                                      return const Icon(
+                                          Icons.camera_rear_outlined);
+                                  }
+                                },
+                              ),
+                              iconSize: 32.0,
+                              onPressed: () => controller.switchCamera(),
+                            ),
+                            SizedBox(
+                              width: 100,
+                              child: IconButton(
+                                color: Colors.black26,
+                                icon: const Icon(Icons.image_outlined),
+                                iconSize: 32.0,
+                                onPressed: () async {
+                                  final ImagePicker picker = ImagePicker();
+                                  // Pick an image
+                                  final XFile? image = await picker.pickImage(
+                                    source: ImageSource.gallery,
+                                  );
+                                  if (image != null) {
+                                    if (await controller
+                                        .analyzeImage(image.path)) {
+                                      if (!mounted) return;
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Barcode found!'),
+                                          backgroundColor: Colors.green,
+                                        ),
+                                      );
+                                    } else {
+                                      if (!mounted) return;
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text('No barcode found!'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
                                     }
-                                  },
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width - 200,
+                          height: 50,
+                          child: InkWell(
+                            onHover: (value) => "Copy",
+                            onTap: () {
+                              Clipboard.setData(ClipboardData(text: barcode))
+                                  .then((value) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Copy'),
+                                    backgroundColor: Colors.blueAccent,
+                                  ),
+                                );
+                                _interstitialAd!.show();
+                              });
+                            },
+                            child: FittedBox(
+                              child: Text(
+                                barcode ?? 'Scan something!',
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 20,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
+                      ),
 
+                      if (barcode?.length != null)
                         Center(
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width - 200,
                             height: 50,
                             child: InkWell(
-                              onHover: (value) => "Copy",
                               onTap: () {
-                                Clipboard.setData(
-                                    ClipboardData(text: barcode))
+                                Clipboard.setData(ClipboardData(text: barcode))
                                     .then((value) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -344,187 +778,154 @@ class _BarcodeScannerWithControllerState
                                       backgroundColor: Colors.blueAccent,
                                     ),
                                   );
-                                  _interstitialAd!.show();
                                 });
                               },
-                              child: FittedBox(
-                                child: Text(
-                                  barcode ?? 'Scan something!',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                  ),
+                              child: const Text(
+                                'Click to copy',
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.indigoAccent,
+                                  fontSize: 20,
                                 ),
                               ),
                             ),
                           ),
                         ),
 
-                        if (barcode?.length != null)
-                          Center(
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width - 200,
-                              height: 50,
-                              child: InkWell(
-                                onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: barcode))
-                                      .then((value) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Copy'),
-                                        backgroundColor: Colors.blueAccent,
-                                      ),
-                                    );
-                                  });
-                                },
-                                child: const Text(
-                                  'Click to copy',
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: Colors.indigoAccent,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                        // Align(
-                        //   alignment: Alignment.bottomCenter,
-                        //   child: Container(
-                        //     alignment: Alignment.bottomCenter,
-                        //     height: 100,
-                        //     color: Colors.black.withOpacity(0.4),
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //       children: [
-                        //         IconButton(
-                        //           color: Colors.white,
-                        //           icon: ValueListenableBuilder(
-                        //             valueListenable: controller.torchState,
-                        //             builder: (context, state, child) {
-                        //               if (state == null) {
-                        //                 return const Icon(
-                        //                   Icons.flash_off,
-                        //                   color: Colors.grey,
-                        //                 );
-                        //               }
-                        //               switch (state as TorchState) {
-                        //                 case TorchState.off:
-                        //                   return const Icon(
-                        //                     Icons.flash_off,
-                        //                     color: Colors.grey,
-                        //                   );
-                        //                 case TorchState.on:
-                        //                   return const Icon(
-                        //                     Icons.flash_on,
-                        //                     color: Colors.yellow,
-                        //                   );
-                        //               }
-                        //             },
-                        //           ),
-                        //           iconSize: 32.0,
-                        //           onPressed: () => controller.toggleTorch(),
-                        //         ),
-                        //         IconButton(
-                        //           color: Colors.white,
-                        //           icon: isStarted
-                        //               ? const Icon(Icons.stop)
-                        //               : const Icon(Icons.play_arrow),
-                        //           iconSize: 32.0,
-                        //           onPressed: () => setState(() {
-                        //             isStarted ? controller.stop() : controller.start();
-                        //             isStarted = !isStarted;
-                        //           }),
-                        //         ),
-                        //         Center(
-                        //           child: SizedBox(
-                        //             width: MediaQuery.of(context).size.width - 200,
-                        //             height: 50,
-                        //             child: FittedBox(
-                        //               child: Text(
-                        //                 barcode ?? 'Scan something!',
-                        //                 overflow: TextOverflow.fade,
-                        //                 style: Theme.of(context)
-                        //                     .textTheme
-                        //                     .headline4!
-                        //                     .copyWith(color: Colors.white),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ),
-                        //         IconButton(
-                        //           color: Colors.white,
-                        //           icon: ValueListenableBuilder(
-                        //             valueListenable: controller.cameraFacingState,
-                        //             builder: (context, state, child) {
-                        //               if (kDebugMode) {
-                        //                 print("state : $state");
-                        //               }
-                        //
-                        //               if (state == null) {
-                        //                 return const Icon(Icons.camera_front);
-                        //               }
-                        //               switch (state as CameraFacing) {
-                        //                 case CameraFacing.front:
-                        //                   return const Icon(Icons.camera_front);
-                        //                 case CameraFacing.back:
-                        //                   return const Icon(Icons.camera_rear);
-                        //               }
-                        //
-                        //
-                        //             },
-                        //           ),
-                        //           iconSize: 32.0,
-                        //           onPressed: () => controller.switchCamera(),
-                        //         ),
-                        //         IconButton(
-                        //           color: Colors.white,
-                        //           icon: const Icon(Icons.image),
-                        //           iconSize: 32.0,
-                        //           onPressed: () async {
-                        //             final ImagePicker picker = ImagePicker();
-                        //             // Pick an image
-                        //             final XFile? image = await picker.pickImage(
-                        //               source: ImageSource.gallery,
-                        //             );
-                        //             if (image != null) {
-                        //               if (await controller.analyzeImage(image.path)) {
-                        //                 if (!mounted) return;
-                        //                 ScaffoldMessenger.of(context).showSnackBar(
-                        //                   const SnackBar(
-                        //                     content: Text('Barcode found!'),
-                        //                     backgroundColor: Colors.green,
-                        //                   ),
-                        //                 );
-                        //               } else {
-                        //                 if (!mounted) return;
-                        //                 ScaffoldMessenger.of(context).showSnackBar(
-                        //                   const SnackBar(
-                        //                     content: Text('No barcode found!'),
-                        //                     backgroundColor: Colors.red,
-                        //                   ),
-                        //                 );
-                        //               }
-                        //             }
-                        //           },
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // )
-                      ],
-                    ),
+                      // Align(
+                      //   alignment: Alignment.bottomCenter,
+                      //   child: Container(
+                      //     alignment: Alignment.bottomCenter,
+                      //     height: 100,
+                      //     color: Colors.black.withOpacity(0.4),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //       children: [
+                      //         IconButton(
+                      //           color: Colors.white,
+                      //           icon: ValueListenableBuilder(
+                      //             valueListenable: controller.torchState,
+                      //             builder: (context, state, child) {
+                      //               if (state == null) {
+                      //                 return const Icon(
+                      //                   Icons.flash_off,
+                      //                   color: Colors.grey,
+                      //                 );
+                      //               }
+                      //               switch (state as TorchState) {
+                      //                 case TorchState.off:
+                      //                   return const Icon(
+                      //                     Icons.flash_off,
+                      //                     color: Colors.grey,
+                      //                   );
+                      //                 case TorchState.on:
+                      //                   return const Icon(
+                      //                     Icons.flash_on,
+                      //                     color: Colors.yellow,
+                      //                   );
+                      //               }
+                      //             },
+                      //           ),
+                      //           iconSize: 32.0,
+                      //           onPressed: () => controller.toggleTorch(),
+                      //         ),
+                      //         IconButton(
+                      //           color: Colors.white,
+                      //           icon: isStarted
+                      //               ? const Icon(Icons.stop)
+                      //               : const Icon(Icons.play_arrow),
+                      //           iconSize: 32.0,
+                      //           onPressed: () => setState(() {
+                      //             isStarted ? controller.stop() : controller.start();
+                      //             isStarted = !isStarted;
+                      //           }),
+                      //         ),
+                      //         Center(
+                      //           child: SizedBox(
+                      //             width: MediaQuery.of(context).size.width - 200,
+                      //             height: 50,
+                      //             child: FittedBox(
+                      //               child: Text(
+                      //                 barcode ?? 'Scan something!',
+                      //                 overflow: TextOverflow.fade,
+                      //                 style: Theme.of(context)
+                      //                     .textTheme
+                      //                     .headline4!
+                      //                     .copyWith(color: Colors.white),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         IconButton(
+                      //           color: Colors.white,
+                      //           icon: ValueListenableBuilder(
+                      //             valueListenable: controller.cameraFacingState,
+                      //             builder: (context, state, child) {
+                      //               if (kDebugMode) {
+                      //                 print("state : $state");
+                      //               }
+                      //
+                      //               if (state == null) {
+                      //                 return const Icon(Icons.camera_front);
+                      //               }
+                      //               switch (state as CameraFacing) {
+                      //                 case CameraFacing.front:
+                      //                   return const Icon(Icons.camera_front);
+                      //                 case CameraFacing.back:
+                      //                   return const Icon(Icons.camera_rear);
+                      //               }
+                      //
+                      //
+                      //             },
+                      //           ),
+                      //           iconSize: 32.0,
+                      //           onPressed: () => controller.switchCamera(),
+                      //         ),
+                      //         IconButton(
+                      //           color: Colors.white,
+                      //           icon: const Icon(Icons.image),
+                      //           iconSize: 32.0,
+                      //           onPressed: () async {
+                      //             final ImagePicker picker = ImagePicker();
+                      //             // Pick an image
+                      //             final XFile? image = await picker.pickImage(
+                      //               source: ImageSource.gallery,
+                      //             );
+                      //             if (image != null) {
+                      //               if (await controller.analyzeImage(image.path)) {
+                      //                 if (!mounted) return;
+                      //                 ScaffoldMessenger.of(context).showSnackBar(
+                      //                   const SnackBar(
+                      //                     content: Text('Barcode found!'),
+                      //                     backgroundColor: Colors.green,
+                      //                   ),
+                      //                 );
+                      //               } else {
+                      //                 if (!mounted) return;
+                      //                 ScaffoldMessenger.of(context).showSnackBar(
+                      //                   const SnackBar(
+                      //                     content: Text('No barcode found!'),
+                      //                     backgroundColor: Colors.red,
+                      //                   ),
+                      //                 );
+                      //               }
+                      //             }
+                      //           },
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // )
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 }
 
